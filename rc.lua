@@ -603,7 +603,7 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 beautiful.notification_opacity = '100'
 beautiful.notification_icon_size = 80
 beautiful.notification_bg = '(0,0,0)'
-beautiful.notification_fg = '#d4be98'
+beautiful.notification_fg = '#000000'
 --
 awful.spawn.with_shell('wal -R')
 awful.spawn.with_shell('flameshot')
