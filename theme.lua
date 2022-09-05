@@ -97,6 +97,6 @@ theme.layout_cornerse = themes_path.."default/layouts/cornersew.png"
 -- Define the icon theme for application icons. If not set then the icons
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
 theme.icon_theme = nil
-theme.awesome_icon=usr_home.."/.config/awesome/logo.jpg" 
+theme.awesome_icon=usr_home.."/.config/awesome/logo.png" 
 
 return theme

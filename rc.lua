@@ -220,7 +220,7 @@ awful.screen.connect_for_each_screen(function(s)
         buttons = tasklist_buttons
     }
 
-    s.mywibox = awful.wibar({screen = s,height=20,shape= gears.shape.rounded_rect,position="top",ontop=true })
+    s.mywibox = awful.wibar({screen = s,height=21,shape= gears.shape.rounded_rect,position="top",ontop=true })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -414,6 +414,13 @@ awful.key({	modkey, "Shift"	}, "c", function () pomodoro:finish() end),
 
 
 clientkeys = gears.table.join(
+
+    awful.key({ modkey, "Shift"   }, "Left",   function (c) c:move_to_screen()               end,
+              {description = "move to screen", group = "client"}),
+    awful.key({ modkey, "Shift"   }, "Right",  function (c) c:move_to_screen()               end,
+              {description = "move to screen", group = "client"}),    
+    awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
+              {description = "toggle keep on top", group = "client"}),
     awful.key({ modkey,           }, "f",
         function (c)
             c.fullscreen = not c.fullscreen
