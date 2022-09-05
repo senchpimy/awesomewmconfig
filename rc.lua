@@ -1,10 +1,11 @@
 -- If LuaRocks is installed, make sure that packages installed through it are
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
+local usr_home= os.getenv( "HOME" ) 
 pcall(require, "luarocks.loader")
 require('collision')()
+local awmodoro = require("awmodoro")
 local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
 local calendar_widget = require("awesome-wm-widgets.calendar-widget.calendar")
-local cpu = require("awesome-wm-widgets.cpu-widget.cpu-widget")
 local ram = require("awesome-wm-widgets.ram-widget.ram-widget")
 -- Standard awesome library
 local gears = require("gears")
@@ -49,7 +50,15 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init("/home/plof/.cache/wal/theme.lua")
+local status, err_theme = pcall(function() beautiful.init(usr_home .."/.cache/wal/theme.lua") end)
+if err_theme~=nil then 
+goto continue 
+
+else
+	beautiful.init(usr_home.."/.config/awesome/theme.lua")
+end
+
+::continue::
 
 -- This is used later as the default terminal and editor to run.
 terminal = "st"
@@ -65,22 +74,24 @@ modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
-    -- awful.layout.suit.floating,
-     awful.layout.suit.tile
-    -- awful.layout.suit.tile.left,
-    -- awful.layout.suit.tile.bottom,
-    -- awful.layout.suit.tile.top,
+     awful.layout.suit.tile,
+     awful.layout.suit.floating,
+     awful.layout.suit.tile.left,
+     awful.layout.suit.tile.bottom,
+     awful.layout.suit.tile.top,
     -- awful.layout.suit.fair,
     -- awful.layout.suit.fair.horizontal,
     -- awful.layout.suit.spiral,
     -- awful.layout.suit.spiral.dwindle,
-    -- awful.layout.suit.max,
+     awful.layout.suit.max,
     -- awful.layout.suit.max.fullscreen,
     -- awful.layout.suit.magnifier,
     -- awful.layout.suit.corner.nw,
     -- awful.layout.suit.corner.ne,
     -- awful.layout.suit.corner.sw,
     -- awful.layout.suit.corner.se,
+     --lain.layout.cascade,
+     --lain.layout.cascade.tile,
 }
 -- }}}
 
@@ -108,7 +119,7 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+mytextclock = wibox.widget.textclock('%_H:%M')
 local cw = calendar_widget({
     placement = 'top_right',
     start_sunday = true,
@@ -209,7 +220,7 @@ awful.screen.connect_for_each_screen(function(s)
         buttons = tasklist_buttons
     }
 
-    s.mywibox = awful.wibar({screen = s,x=0,y=1000,height=30,width=1200,shape= gears.shape.rounded_rect,position="top",ontop=true })
+    s.mywibox = awful.wibar({screen = s,height=20,shape= gears.shape.rounded_rect,position="top",ontop=true })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -223,7 +234,6 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            cpu(),
             ram({
                     widget_height=30,
                     widget_width=30,
@@ -234,13 +244,33 @@ awful.screen.connect_for_each_screen(function(s)
             batteryarc_widget({
             show_current_level = true,
             arc_thickness = 3,
-            size=25,
+            size=30,
             show_notification_mode='on_click'
         }),
         },
     }
 end)
 -- }}}
+
+pomowibox = awful.wibox({ position = "top", screen = 1, height=4})
+pomowibox.visible = false
+local pomodoro = awmodoro.new({
+	minutes 			= 15,
+	do_notify 			= true,
+	active_bg_color 	= '#313131',
+	paused_bg_color 	= '#7746D7',
+	fg_color			= {type = "linear", from = {0,0}, to = {pomowibox.width, 0}, stops = {{0, "#AECF96"},{0.5, "#88A175"},{1, "#FF5656"}}},
+	width 				= pomowibox.width,
+	height 				= pomowibox.height, 
+
+	begin_callback = function()
+		pomowibox.visible = true
+	end,
+
+	finish_callback = function()
+		pomowibox.visible = false
+	end})
+pomowibox:set_widget(pomodoro)
 
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
@@ -349,6 +379,10 @@ globalkeys = gears.table.join(
 
     awful.key({ modkey },            "q",     function () awful.util.spawn('sh /home/plof/.config/rofi/applets/applets/mpd.sh') end,
               {description = "Media PLayer Menu", group = "System Control"}),
+
+awful.key({	modkey			}, "c", function () pomodoro:toggle() end),
+
+awful.key({	modkey, "Shift"	}, "c", function () pomodoro:finish() end),
 
     awful.key({ modkey }, "x",
               function ()
@@ -602,8 +636,8 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 --test
 beautiful.notification_opacity = '100'
 beautiful.notification_icon_size = 80
-beautiful.notification_bg = '(0,0,0)'
+beautiful.notification_bg = '#ffffff'
 beautiful.notification_fg = '#000000'
---
+
 awful.spawn.with_shell('wal -R')
 awful.spawn.with_shell('flameshot')
