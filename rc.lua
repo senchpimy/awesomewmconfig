@@ -50,7 +50,7 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-local status, err_theme = pcall(function() beautiful.init(usr_home .."/.cache/wal/theme.lua") end)
+local _, err_theme = pcall(function() beautiful.init(usr_home .."/.cache/wal/theme.lu") end)
 if err_theme~=nil then 
 goto continue 
 
@@ -639,5 +639,5 @@ beautiful.notification_icon_size = 80
 beautiful.notification_bg = '#ffffff'
 beautiful.notification_fg = '#000000'
 
-awful.spawn.with_shell('wal -R')
+--awful.spawn.with_shell('wal -R')
 awful.spawn.with_shell('flameshot')

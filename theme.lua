@@ -8,25 +8,25 @@ local dpi = xresources.apply_dpi
 
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
-
+local usr_home= os.getenv( "HOME" ) 
 theme={}
 theme.font          = "Hack 8"
 
-theme.bg_normal     = "#000000"
-theme.bg_focus      = "#8D7574"
-theme.bg_urgent     = "#777684"
-theme.bg_minimize   = "#918F95"
+theme.bg_normal     = "#212121"
+theme.bg_focus      = "#375088"
+theme.bg_urgent     = "#92172E"
+theme.bg_minimize   = "#716F51"
 theme.bg_systray    = theme.bg_normal
 
-theme.fg_normal     = "#aaaaaa"
+theme.fg_normal     = "#ffffff"
 theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
 
-theme.useless_gap   = dpi(5)
-theme.border_width  = dpi(0)
+theme.useless_gap   = dpi(3)
+theme.border_width  = dpi(2)
 theme.border_normal = "#000000"
-theme.border_focus  = "#535d6c"
+theme.border_focus  = theme.bg_urgent
 theme.border_marked = "#91231c"
 
 -- There are other variable sets
@@ -60,8 +60,8 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
---theme.menu_submenu_icon = themes_path.."default/submenu.png"
-theme.menu_submenu_icon = "/home/plof/Pictures/1-4.jpg"
+theme.menu_submenu_icon = themes_path.."default/submenu.png"
+--theme.menu_submenu_icon = "/home/plof/Pictures/1-4.jpg"
 theme.menu_height = dpi(20)
 theme.menu_width  = dpi(100)
 
@@ -72,7 +72,7 @@ theme.menu_width  = dpi(100)
 
 -- Define the image to load
 
-theme.wallpaper = "/home/plof/Pictures/1658502877765234.jpg"
+theme.wallpaper = usr_home.."/.config/awesome/wallpaper.jpg"
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = themes_path.."default/layouts/fairhw.png"
@@ -97,6 +97,6 @@ theme.layout_cornerse = themes_path.."default/layouts/cornersew.png"
 -- Define the icon theme for application icons. If not set then the icons
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
 theme.icon_theme = nil
-theme.awesome_icon="/home/plof/Pictures/301119199_1744695875876559_1912054115194111616_n.jpg" 
+theme.awesome_icon=usr_home.."/.config/awesome/logo.jpg" 
 
 return theme
