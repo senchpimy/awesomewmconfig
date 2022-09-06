@@ -22,7 +22,8 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
-
+--Lain
+local lain          = require("lain")
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -415,6 +416,12 @@ awful.key({	modkey, "Shift"	}, "c", function () pomodoro:finish() end),
 
 clientkeys = gears.table.join(
 
+    -- Non-empty tag browsing
+    awful.key({ modkey,"Shift" }, "o", function () lain.util.tag_view_nonempty(-1) end,
+              {description = "view  previous nonempty", group = "tag"}),
+    awful.key({ modkey,"Shift" }, "p", function () lain.util.tag_view_nonempty(1) end,
+              {description = "view  next nonempty", group = "tag"}),
+	      --screenshots
     awful.key({ }, "Print", function () awful.util.spawn("scrot 'Screenshot-%Y-%m-%d-%s.jpg' -e 'mv $f "..usr_home.."/Public/$f'") end,
         {description = "Scrot", group = "screenshots"}),
     awful.key({ modkey, "Shift"   }, "Left",   function (c) c:move_to_screen()               end,
