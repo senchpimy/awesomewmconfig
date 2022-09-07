@@ -122,7 +122,7 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 local separators = lain.util.separators
 --local separator = separators.arrow_left
 separator=wibox.widget {
-    shape        = gears.shape.circle,
+    shape        = gears.shape.pie,
     color        = '#ffffff',
     border_width = 1,
     border_color = "#ff0000",
@@ -253,16 +253,17 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+		 --separator("alpha", "#7197E7"),
+		 --separator,
+            wibox.widget.systray(),
             ram({
                     widget_height=30,
                     widget_width=30,
                 }),
-		 --separator("alpha", "#7197E7"),
-		 --separator,
-            wibox.widget.systray(),
 		 --separator,
 		 --separator("alpha", "#7197E7"),
 		 wibox.container.background(wibox.container.margin(mytextclock, 4, 8), "#7197E7"),
+--		 wibox.container.background(wibox.container.margin(separator, 0, 0), "#7197E7"),
             --mytextclock,
 		 --separator,
 		 --separator("alpha", "#7197E7"),
