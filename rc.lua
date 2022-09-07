@@ -119,6 +119,24 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- }}}
 
 -- {{{ Wibar
+local separators = lain.util.separators
+--local separator = separators.arrow_left
+separator=wibox.widget {
+    shape        = gears.shape.circle,
+    color        = '#ffffff',
+    border_width = 1,
+    border_color = "#ff0000",
+    widget       = wibox.widget.separator,
+}
+--local new_shape = function(cr, width, height)
+--    gears.shape.rounded_rect(cr, width, height, 2)
+--end
+--wibox.widget {
+--    widget = wibox.widget.separator{
+--	    shape=new_shape
+--    }
+--}
+
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock('%_H:%M')
 local cw = calendar_widget({
@@ -239,9 +257,17 @@ awful.screen.connect_for_each_screen(function(s)
                     widget_height=30,
                     widget_width=30,
                 }),
+		 --separator("alpha", "#7197E7"),
+		 --separator,
             wibox.widget.systray(),
+		 --separator,
+		 --separator("alpha", "#7197E7"),
             mytextclock,
+		 --separator,
+		 --separator("alpha", "#7197E7"),
             s.mylayoutbox,
+		 --separator,
+		 --separator("alpha", "#7197E7"),
             batteryarc_widget({
             show_current_level = true,
             arc_thickness = 3,
@@ -416,6 +442,11 @@ awful.key({	modkey, "Shift"	}, "c", function () pomodoro:finish() end),
 
 clientkeys = gears.table.join(
 
+    -- Brightness
+    awful.key({ }, "XF86MonBrightnessUp", function () os.execute("xbacklight -inc 10") end,
+              {description = "+10%", group = "System Control"}),
+    awful.key({ }, "XF86MonBrightnessDown", function () os.execute("xbacklight -dec 10") end,
+              {description = "-10%", group = "System Control"}),
     -- Non-empty tag browsing
     awful.key({ modkey,"Shift" }, "o", function () lain.util.tag_view_nonempty(-1) end,
               {description = "view  previous nonempty", group = "tag"}),
@@ -423,7 +454,7 @@ clientkeys = gears.table.join(
               {description = "view  next nonempty", group = "tag"}),
 	      --screenshots
     awful.key({ }, "Print", function () awful.util.spawn("scrot 'Screenshot-%Y-%m-%d-%s.jpg' -e 'mv $f "..usr_home.."/Public/$f'") end,
-        {description = "Scrot", group = "screenshots"}),
+        {description = "Scrot", group = "System Control"}),
     awful.key({ modkey, "Shift"   }, "Left",   function (c) c:move_to_screen()               end,
               {description = "move to screen", group = "client"}),
     awful.key({ modkey, "Shift"   }, "Right",  function (c) c:move_to_screen()               end,
@@ -571,7 +602,6 @@ awful.rules.rules = {
           "Gpick",
           "Kruler",
           "MessageWin",  -- kalarm.
-          "Sxiv",
           "Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
           "Wpa_gui",
           "veromix",
