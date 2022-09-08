@@ -53,8 +53,8 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-local _, err_theme = pcall(function() beautiful.init(usr_home .."/.cache/wal/theme.lu") end)
-if err_theme~=nil then 
+local _, err_theme = pcall(function() beautiful.init(usr_home .."/.cache/wal/theme.lua") end)
+if err_theme==nil then 
 goto continue 
 
 else
