@@ -120,14 +120,7 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 
 -- {{{ Wibar
 local separators = lain.util.separators
---local separator = separators.arrow_left
-separator=wibox.widget {
-    shape        = gears.shape.pie,
-    color        = '#ffffff',
-    border_width = 1,
-    border_color = "#ff0000",
-    widget       = wibox.widget.separator,
-}
+local separator = separators.arrow_left
 --local new_shape = function(cr, width, height)
 --    gears.shape.rounded_rect(cr, width, height, 2)
 --end
@@ -253,29 +246,28 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-		 --separator("alpha", "#7197E7"),
-		 --separator,
-            wibox.widget.systray(),
+		 separator("alpha", "#7197E7"),
+		 wibox.container.background(wibox.container.margin(wibox.widget.systray(), 4, 8), "#7197E7"),
+		 wibox.container.background(wibox.container.margin(separator("a",beautiful.bg_normal), 4, 0), "#7197E7"),
             ram({
                     widget_height=30,
                     widget_width=30,
                 }),
-		 --separator,
-		 --separator("alpha", "#7197E7"),
+		 separator("alpha", "#7197E7"),
 		 wibox.container.background(wibox.container.margin(mytextclock, 4, 8), "#7197E7"),
---		 wibox.container.background(wibox.container.margin(separator, 0, 0), "#7197E7"),
-            --mytextclock,
+		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.fg_color), 0, 0), "#7197E7"),
+		 wibox.container.background(wibox.container.margin(separator("a",beautiful.bg_normal), 4, 0), "#7197E7"),
+		 wibox.container.background(wibox.container.margin(s.mylayoutbox, 4, 8), beautiful.fg_color),
 		 --separator,
 		 --separator("alpha", "#7197E7"),
-            s.mylayoutbox,
-		 --separator,
-		 --separator("alpha", "#7197E7"),
-            batteryarc_widget({
-            show_current_level = true,
-            arc_thickness = 3,
-            size=30,
-            show_notification_mode='on_click'
-        }),
+		 separator("alpha", "#7197E7"),
+		 wibox.container.background(wibox.container.margin(
+	            batteryarc_widget({
+	            show_current_level = true,
+	            arc_thickness = 3,
+	            size=30,
+	            show_notification_mode='on_click'
+	        }), 4, 8), "#7197E7"),
         },
     }
 end)
