@@ -7,6 +7,8 @@ local awmodoro = require("awmodoro")
 local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
 local calendar_widget = require("awesome-wm-widgets.calendar-widget.calendar")
 local ram = require("awesome-wm-widgets.ram-widget.ram-widget")
+local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
+local todo_widget = require("awesome-wm-widgets.todo-widget.todo")
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -205,7 +207,8 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ "(=^ ◡ ^=)", " ૮ – ﻌ–ა ", "   𐐘 ඞ  ", "ଲ(ⓛ ω ⓛ)ଲ", "(´｡• ω •｡`)" }, s, awful.layout.layouts[1])
+    --awful.tag({ "(=^ ◡ ^=)", " ૮ – ﻌ–ა ", "   𐐘 ඞ  ", "ଲ(ⓛ ω ⓛ)ଲ", "(´｡• ω •｡`)" }, s, awful.layout.layouts[1])
+      awful.tag({ "₍ᐢ.  ̫.ᐢ₎", "૮ – ﻌ–ა", " 𐐘 ඞ  ", "ʕ´•ᴥ•`ʔ", "(`皿´＃)" }, s, awful.layout.layouts[1])
     -- awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
@@ -246,28 +249,30 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-		 separator("alpha", "#7197E7"),
-		 wibox.container.background(wibox.container.margin(wibox.widget.systray(), 4, 8), "#7197E7"),
-		 wibox.container.background(wibox.container.margin(separator("a",beautiful.bg_normal), 4, 0), "#7197E7"),
+		 --wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 5, 0), beautiful.bg_normal),
+		 wibox.container.background(wibox.container.margin(wibox.widget.systray(), 10, 5), beautiful.bg_normal),
+		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 0, 0), beautiful.bg_normal),
+		 wibox.container.background(wibox.container.margin(volume_widget(), 4, 8), beautiful.bg_separator),
+		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_normal), 0, 0), beautiful.bg_separator),
+		 todo_widget(),
+		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 0, 0), beautiful.bg_normal),
+		 wibox.container.background(wibox.container.margin(
             ram({
                     widget_height=30,
                     widget_width=30,
-                }),
-		 separator("alpha", "#7197E7"),
-		 wibox.container.background(wibox.container.margin(mytextclock, 4, 8), "#7197E7"),
-		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.fg_color), 0, 0), "#7197E7"),
-		 wibox.container.background(wibox.container.margin(separator("a",beautiful.bg_normal), 4, 0), "#7197E7"),
-		 wibox.container.background(wibox.container.margin(s.mylayoutbox, 4, 8), beautiful.fg_color),
-		 --separator,
-		 --separator("alpha", "#7197E7"),
-		 separator("alpha", "#7197E7"),
+                }), 4, 8), beautiful.bg_separator),
+		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_normal), 0, 0), beautiful.bg_separator),
+		 wibox.container.background(wibox.container.margin(mytextclock, 4, 8), beautiful.bg_normal),
+		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 0, 0), beautiful.bg_normal),
 		 wibox.container.background(wibox.container.margin(
 	            batteryarc_widget({
 	            show_current_level = true,
 	            arc_thickness = 3,
 	            size=30,
 	            show_notification_mode='on_click'
-	        }), 4, 8), "#7197E7"),
+	        }), 4, 8), beautiful.bg_separator),
+		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_normal), 4, 0), beautiful.bg_separator),
+		 wibox.container.background(wibox.container.margin(s.mylayoutbox, 10, 8), beautiful.fg_color),
         },
     }
 end)

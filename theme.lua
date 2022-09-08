@@ -17,8 +17,9 @@ theme.bg_normal     = "#212121"
 theme.bg_focus      = "#375088"
 theme.bg_urgent     = "#92172E"
 theme.bg_minimize   = "#716F51"
---theme.bg_systray    = theme.bg_normal
-theme.bg_systray    = "#7197E7"
+theme.bg_systray    = theme.bg_normal
+theme.bg_separator    = "#94A459"
+--theme.bg_systray    =theme.bg_separator 
 
 theme.fg_normal     = "#ffffff"
 theme.fg_focus      = "#ffffff"
@@ -26,7 +27,7 @@ theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
 
 theme.useless_gap   = dpi(3)
-theme.border_width  = dpi(2)
+theme.border_width  = dpi(3)
 theme.border_normal = "#000000"
 theme.border_focus  = theme.bg_urgent
 theme.border_marked = "#91231c"
