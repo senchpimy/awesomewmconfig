@@ -78,6 +78,7 @@ editor_cmd = terminal .. " -e " .. editor
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
+local altkey      = "Mod1"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
@@ -249,7 +250,7 @@ systray:set_base_size(20)
             layout = wibox.layout.fixed.horizontal,
             mylauncher,
             s.mytaglist,
---            s.mypromptbox,
+            s.mypromptbox,
         },
         s.mytasklist, -- Middle widget
         { -- Right widgets
@@ -313,6 +314,18 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
+    -- Dynamic tagging
+    awful.key({ modkey, altkey }, "n", function () lain.util.add_tag() end,
+        {description = "add new tag", group = "tag"}),
+    awful.key({ modkey, altkey}, "r", function () lain.util.rename_tag() end,
+        {description = "rename tag", group = "tag"}),
+    awful.key({ modkey, altkey }, "j", function () lain.util.move_tag(-1) end,
+        {description = "move tag to the left", group = "tag"}),
+    awful.key({ modkey, altkey }, "k", function () lain.util.move_tag(1) end,
+        {description = "move tag to the right", group = "tag"}),
+    awful.key({ modkey, altkey }, "d", function () lain.util.delete_tag() end,
+        {description = "delete tag", group = "tag"}),
+
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
 
@@ -361,14 +374,6 @@ globalkeys = gears.table.join(
               {description = "focus the previous screen", group = "screen"}),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
-    awful.key({ modkey,           }, "Tab",
-        function ()
-            awful.client.focus.history.previous()
-            if client.focus then
-                client.focus:raise()
-            end
-        end,
-        {description = "go back", group = "client"}),
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
@@ -408,8 +413,8 @@ globalkeys = gears.table.join(
               {description = "restore minimized", group = "client"}),
 
     -- Prompt
---    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
---            {description = "run prompt", group = "launcher"}),
+    awful.key({ modkey,altkey },            "u",     function () awful.screen.focused().mypromptbox:run() end,
+            {description = "run prompt", group = "launcher"}),
     awful.key({ modkey },            "r",     function () awful.util.spawn('rofi -no-lazy-grab -show drun -modi drun,run,window -theme /home/plof/.config/rofi/launchers/style_1.rasi') end,
               {description = "run prompt", group = "launcher"}),
 
