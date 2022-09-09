@@ -53,15 +53,19 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-local _, err_theme = pcall(function() beautiful.init(usr_home .."/.cache/wal/theme.lua") end)
-if err_theme==nil then 
-goto continue 
-
-else
-	beautiful.init(usr_home.."/.config/awesome/theme.lua")
+--
+function file_exists(name)
+   local f=io.open(name,"r")
+   if f~=nil then io.close(f) return true else return false end
 end
 
-::continue::
+if file_exists(usr_home .."/.cache/wal/theme.lua") then 
+
+	beautiful.init(usr_home .."/.cache/wal/theme.lua")
+else
+
+	beautiful.init(usr_home .."/.config/awesome/theme.lua")
+end
 
 -- This is used later as the default terminal and editor to run.
 terminal = "st"
@@ -236,7 +240,8 @@ awful.screen.connect_for_each_screen(function(s)
     }
 
     s.mywibox = awful.wibar({screen = s,height=21,shape= gears.shape.rounded_rect,position="top",ontop=false })    
-
+local systray=wibox.widget.systray()
+systray:set_base_size(20)
     -- Add widgets to the wibox
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
@@ -250,7 +255,7 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
 		 --wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 5, 0), beautiful.bg_normal),
-		 wibox.container.background(wibox.container.margin(wibox.widget.systray(), 10, 5), beautiful.bg_normal),
+		 wibox.container.background(wibox.container.margin(systray,10, 5), beautiful.bg_normal),
 		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 0, 0), beautiful.bg_normal),
 		 wibox.container.background(wibox.container.margin(volume_widget(), 4, 8), beautiful.bg_separator),
 		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_normal), 0, 0), beautiful.bg_separator),

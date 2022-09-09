@@ -19,6 +19,7 @@ theme.bg_urgent     = "#92172E"
 theme.bg_minimize   = "#716F51"
 theme.bg_systray    = theme.bg_normal
 theme.bg_separator    = "#94A459"
+theme.systray_icon_spacing=8
 --theme.bg_systray    =theme.bg_separator 
 
 theme.fg_normal     = "#ffffff"
