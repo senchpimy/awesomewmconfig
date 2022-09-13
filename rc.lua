@@ -707,3 +707,4 @@ beautiful.notification_fg = '#000000'
 
 --awful.spawn.with_shell('wal -R')
 awful.spawn.with_shell('flameshot')
+awful.spawn.with_shell('mpd')
