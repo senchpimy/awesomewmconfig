@@ -462,7 +462,7 @@ clientkeys = gears.table.join(
     awful.key({ modkey,"Shift" }, "p", function () lain.util.tag_view_nonempty(1) end,
               {description = "view  next nonempty", group = "tag"}),
 	      --screenshots
-    awful.key({ }, "Print", function () awful.util.spawn("scrot 'Screenshot-%Y-%m-%d-%s.jpg' -e 'mv $f "..usr_home.."/Public/$f'") end,
+    awful.key({ modkey }, "Print", function () awful.util.spawn("scrot 'Screenshot-%Y-%m-%d-%s.jpg' -e 'mv $f "..usr_home.."/Pictures/$f'") end,
         {description = "Scrot", group = "System Control"}),
     awful.key({ modkey, "Shift"   }, "Left",   function (c) c:move_to_screen()               end,
               {description = "move to screen", group = "client"}),
