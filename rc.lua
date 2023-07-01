@@ -1,10 +1,19 @@
+function file_exists(name)
+   local f=io.open(name,"r")
+   if f~=nil then io.close(f) return true else return false end
+end
 -- If LuaRocks is installed, make sure that packages installed through it are
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 local usr_home= os.getenv( "HOME" ) 
 pcall(require, "luarocks.loader")
 require('collision')()
 local awmodoro = require("awmodoro")
-local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
+local battery_exists = false
+if file_exists('/sys/class/power_supply/BAT0') then
+  battery_exists = true
+  --local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
+end
+local github_contributions_widget = require("awesome-wm-widgets.github-contributions-widget.github-contributions-widget")
 local calendar_widget = require("awesome-wm-widgets.calendar-widget.calendar")
 local ram = require("awesome-wm-widgets.ram-widget.ram-widget")
 local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
@@ -54,10 +63,6 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 --
-function file_exists(name)
-   local f=io.open(name,"r")
-   if f~=nil then io.close(f) return true else return false end
-end
 
 if file_exists(usr_home .."/.cache/wal/theme.lua") then 
 
@@ -68,8 +73,8 @@ else
 end
 
 -- This is used later as the default terminal and editor to run.
-terminal = "st"
-editor = os.getenv("EDITOR") or "nvim"
+terminal = "alacritty"
+editor = os.getenv("EDITOR") or "lvim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -237,13 +242,15 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytasklist = awful.widget.tasklist {
         screen  = s,
         filter  = awful.widget.tasklist.filter.currenttags,
-        buttons = tasklist_buttons
+        buttons = tasklist_buttons,
     }
 
     s.mywibox = awful.wibar({screen = s,height=21,shape= gears.shape.rounded_rect,position="top",ontop=false })    
 local systray=wibox.widget.systray()
 systray:set_base_size(20)
     -- Add widgets to the wibox
+  if battery_exists then 
+  local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
@@ -255,6 +262,7 @@ systray:set_base_size(20)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+        github_contributions_widget({username = 'senchpimy',days=60,theme='pink',with_border=false}),
 		 --wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 5, 0), beautiful.bg_normal),
 		 wibox.container.background(wibox.container.margin(systray,10, 5), beautiful.bg_normal),
 		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 0, 0), beautiful.bg_normal),
@@ -281,7 +289,39 @@ systray:set_base_size(20)
 		 wibox.container.background(wibox.container.margin(s.mylayoutbox, 10, 8), beautiful.fg_color),
         },
     }
-end)
+  else 
+    s.mywibox:setup {
+        layout = wibox.layout.align.horizontal,
+        { -- Left widgets
+            layout = wibox.layout.fixed.horizontal,
+            mylauncher,
+            s.mytaglist,
+            s.mypromptbox,
+        },
+        s.mytasklist, -- Middle widget
+        { -- Right widgets
+            layout = wibox.layout.fixed.horizontal,
+        github_contributions_widget({username = 'senchpimy',days=60,theme='pink',with_border=false}),
+		 --wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 5, 0), beautiful.bg_normal),
+		 wibox.container.background(wibox.container.margin(systray,10, 5), beautiful.bg_normal),
+		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 0, 0), beautiful.bg_normal),
+		 wibox.container.background(wibox.container.margin(volume_widget(), 4, 8), beautiful.bg_separator),
+		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_normal), 0, 0), beautiful.bg_separator),
+		 todo_widget(),
+		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 0, 0), beautiful.bg_normal),
+		 wibox.container.background(wibox.container.margin(
+            ram({
+                    widget_height=30,
+                    widget_width=30,
+                }), 4, 8), beautiful.bg_separator),
+		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_normal), 0, 0), beautiful.bg_separator),
+		 wibox.container.background(wibox.container.margin(mytextclock, 4, 8), beautiful.bg_normal),
+		 wibox.container.background(wibox.container.margin(s.mylayoutbox, 10, 8), beautiful.fg_color),
+        },
+    }
+  end
+end
+)
 -- }}}
 
 pomowibox = awful.wibox({ position = "top", screen = 1, height=4})
@@ -343,7 +383,7 @@ globalkeys = gears.table.join(
               {description = "view previous", group = "tag"}),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
               {description = "view next", group = "tag"}),
-    awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
+    awful.key({ modkey,           }, "Tab", awful.tag.history.restore,
               {description = "go back", group = "tag"}),
 
     awful.key({ modkey,           }, "j",
@@ -424,7 +464,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey },            "v",     function () awful.util.spawn('sh /home/plof/.config/rofi/applets/applets/volume.sh') end,
               {description = "Volume Menu", group = "System Control"}),
 
-    awful.key({ modkey },            "q",     function () awful.util.spawn('sh /home/plof/.config/rofi/applets/applets/mpd.sh') end,
+    awful.key({ modkey },            "-",     function () awful.util.spawn('sh /home/plof/.config/rofi/applets/applets/mpd.sh') end,
               {description = "Media PLayer Menu", group = "System Control"}),
 
 awful.key({	modkey			}, "c", function () pomodoro:toggle() end),
@@ -476,7 +516,7 @@ clientkeys = gears.table.join(
             c:raise()
         end,
         {description = "toggle fullscreen", group = "client"}),
-    awful.key({ modkey }, "-",      function (c) c:kill()                         end,
+    awful.key({ modkey }, "q",      function (c) c:kill()                         end,
               {description = "close", group = "client"}),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ,
               {description = "toggle floating", group = "client"}),
