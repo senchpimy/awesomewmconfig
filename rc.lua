@@ -16,7 +16,7 @@ end
 local github_contributions_widget = require("awesome-wm-widgets.github-contributions-widget.github-contributions-widget")
 local calendar_widget = require("awesome-wm-widgets.calendar-widget.calendar")
 local ram = require("awesome-wm-widgets.ram-widget.ram-widget")
-local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
+local volume_widget = require('awesome-wm-widgets.pactl-widget.volume')
 local todo_widget = require("awesome-wm-widgets.todo-widget.todo")
 -- Standard awesome library
 local gears = require("gears")
