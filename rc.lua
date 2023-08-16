@@ -9,6 +9,7 @@ pcall(require, "luarocks.loader")
 require('collision')()
 local awmodoro = require("awmodoro")
 local battery_exists = false
+
 if file_exists('/sys/class/power_supply/BAT0') then
   battery_exists = true
   --local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
@@ -22,14 +23,96 @@ local todo_widget = require("awesome-wm-widgets.todo-widget.todo")
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
--- Widget and layout library
-local wibox = require("wibox")
--- Theme handling library
 local beautiful = require("beautiful")
--- Notification library
+
+if file_exists(usr_home .."/.cache/wal/theme.lua") then 
+
+	beautiful.init(usr_home .."/.cache/wal/theme.lua")
+else
+
+	beautiful.init(usr_home .."/.config/awesome/theme.lua")
+end
+
+local wibox = require("wibox")
+--
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
+local bling = require("bling")
+local app_launcher_config = {
+    terminal = "alacritty",                                            -- Set default terminal
+    search_commands = false,                                            -- Search by app name AND commandline command
+    sort_alphabetically = true,                                        -- Sorts applications alphabetically
+    select_before_spawn = false,                                        -- When selecting by mouse, click once to select app, click once more to open the app.
+    hide_on_left_clicked_outside = true,                               -- Hide launcher on left click outside the launcher popup
+    hide_on_right_clicked_outside = true,                              -- Hide launcher on right click outside the launcher popup
+    hide_on_launch = true,                                             -- Hide launcher when spawning application
+    try_to_keep_index_after_searching = false,                         -- After a search, reselect the previously selected app
+    reset_on_hide = true,                                              -- When you hide the launcher, reset search query
+    save_history = true,                                               -- Save search history
+    wrap_page_scrolling = true,                                        -- Allow scrolling to wrap back to beginning/end of launcher list
+    wrap_app_scrolling = true ,                                        -- Set app scrolling
+
+    type = "dock",
+    show_on_focused_screen = true,                                     -- Should app launcher show on currently focused screen
+    screen = awful.screen,                                             -- Screen you want the launcher to launch to
+    placement = awful.placement.centered,                              -- Where launcher should be placed ("awful.placement.centered").
+    shrink_width = false,                                               -- Automatically shrink width of launcher to fit varying numbers of apps in list (works on apps_per_column)
+    shrink_height = false,                                              -- Automatically shrink height of launcher to fit varying numbers of apps in list (works on apps_per_row)
+    background = beautiful.bg_separator,                                            -- Set bg color
+    border_width = 0,                                             -- Set border width of popup
+    shape = function(cr, width, height)
+      gears.shape.rounded_rect(cr, width, height, 50)
+    end,                                                               -- Set shape for launcher
+    prompt_height = 50,
+    prompt_margins = 30,
+    prompt_paddings = 1,                                         -- Prompt padding
+    prompt_shape = function(cr, width, height)
+      gears.shape.rectangle(cr, width, height)
+    end                        ,                                       -- Set shape for prompt
+    prompt_color = beautiful.bg_separator,                                      -- Prompt background color
+    prompt_border_width = 0 ,
+    prompt_text_halign = "left"   ,                                  -- Prompt text horizontal alignment
+    prompt_text_valign = "center"    ,                                 -- Prompt text vertical alignment
+    prompt_icon_text_spacing = 10,                                -- Prompt icon text spacing
+    prompt_show_icon = false            ,                               -- Should prompt show icon (?)
+    prompt_icon_color = "#000000" ,                                    -- Prompt icon color
+    prompt_icon = ""  ,                                               -- Prompt icon
+    prompt_icon_markup = string.format(
+        "<span size='xx-large'>%s</span>",
+        " "
+    )                   ,                                              -- Prompt icon markup
+    prompt_text = "<b>Search</b>:" ,
+    prompt_start_text = "manager"  ,                                   -- Set string for prompt to start with
+    prompt_text_color = "#FFFFFF"    ,                                 -- Prompt text color
+    prompt_cursor_color = "#000000"  ,                                 -- Prompt cursor color
+
+    apps_per_row = 3                  ,                                -- Set how many apps should appear in each row
+    apps_per_column = 1                ,                               -- Set how many apps should appear in each column
+    apps_margin = {left = 40, right = 40, bottom = 30} ,-- Margin between apps
+    apps_spacing = 10  ,                                          -- Spacing between apps
+
+    expand_apps = true       ,                                         -- Should apps expand to fill width of launcher
+    app_width = 700 ,                                        -- Width of each app
+    app_height = 30,                                       -- Height of each app
+    app_shape = function(cr, width, height)
+      gears.shape.rounded_bar(cr, width, height)
+    end   ,                                                            -- Shape of each app
+    app_normal_color = beautiful.bg_separator,
+    app_normal_hover_color = beautiful.fg_normal,
+    app_selected_color = beautiful.bg_normal,
+    app_selected_hover_color = beautiful.fg_normal,
+    app_content_padding = 5,
+    app_content_spacing = 5,
+    app_show_icon = false                     ,                         -- Should show icon?
+    app_show_name = true                ,                              -- Should show app name?
+    app_name_generic_name_spacing = 0,                            -- Generic name spacing (If show_generic_name)
+    app_name_halign = "center"             ,                           -- App name horizontal alignment
+    app_name_normal_color = beautiful.fg_normal,
+    app_name_selected_color = beautiful.fg_normal,
+    app_show_generic_name = true               ,                       -- Should show generic app name?
+}
+local app_launcher = bling.widget.app_launcher(app_launcher_config)
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -64,13 +147,6 @@ end
 -- Themes define colours, icons, font and wallpapers.
 --
 
-if file_exists(usr_home .."/.cache/wal/theme.lua") then 
-
-	beautiful.init(usr_home .."/.cache/wal/theme.lua")
-else
-
-	beautiful.init(usr_home .."/.config/awesome/theme.lua")
-end
 
 -- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
@@ -218,7 +294,7 @@ awful.screen.connect_for_each_screen(function(s)
 
     -- Each screen has its own tag table.
     --awful.tag({ "(=^ ◡ ^=)", " ૮ – ﻌ–ა ", "   𐐘 ඞ  ", "ଲ(ⓛ ω ⓛ)ଲ", "(´｡• ω •｡`)" }, s, awful.layout.layouts[1])
-      awful.tag({ "₍ᐢ.  ̫.ᐢ₎", "૮ – ﻌ–ა", " 𐐘 ඞ  ", "ʕ´•ᴥ•`ʔ", "(`皿´＃)" }, s, awful.layout.layouts[1])
+      awful.tag({ "₍ᐢ.  ̫.ᐢ₎", "૮ – ﻌ–ა", " 𐐘 ඞ  ", "ʕ´•ᴥ•`ʔ", "(`皿´＃)"," ˚ʚ♡ɞ˚ "," ૮꒰ ˶• ༝ •˶꒱ა ♡ ", " ૮₍ ˃ ⤙ ˂ ₎ა", "༺♡༻" }, s, awful.layout.layouts[1])
     -- awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
@@ -248,6 +324,7 @@ awful.screen.connect_for_each_screen(function(s)
     s.mywibox = awful.wibar({screen = s,height=21,shape= gears.shape.rounded_rect,position="top",ontop=false })    
 local systray=wibox.widget.systray()
 systray:set_base_size(20)
+  --
     -- Add widgets to the wibox
   if battery_exists then 
   local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
@@ -262,7 +339,7 @@ systray:set_base_size(20)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-        github_contributions_widget({username = 'senchpimy',days=60,theme='pink',with_border=false}),
+        github_contributions_widget({username = 'senchpimy',days=30,theme='pink',with_border=false}),
 		 --wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 5, 0), beautiful.bg_normal),
 		 wibox.container.background(wibox.container.margin(systray,10, 5), beautiful.bg_normal),
 		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 0, 0), beautiful.bg_normal),
@@ -301,7 +378,7 @@ systray:set_base_size(20)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-        github_contributions_widget({username = 'senchpimy',days=60,theme='pink',with_border=false}),
+        github_contributions_widget({username = 'senchpimy',days=30,theme='pink',with_border=false}),
 		 --wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 5, 0), beautiful.bg_normal),
 		 wibox.container.background(wibox.container.margin(systray,10, 5), beautiful.bg_normal),
 		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 0, 0), beautiful.bg_normal),
@@ -455,7 +532,9 @@ globalkeys = gears.table.join(
     -- Prompt
     awful.key({ modkey,altkey },            "u",     function () awful.screen.focused().mypromptbox:run() end,
             {description = "run prompt", group = "launcher"}),
-    awful.key({ modkey },            "r",     function () awful.util.spawn('rofi -no-lazy-grab -show drun -modi drun,run,window -theme /home/plof/.config/rofi/launchers/style_1.rasi') end,
+    awful.key({ modkey },            "r",     function () 
+       app_launcher:toggle()
+  end,
               {description = "run prompt", group = "launcher"}),
 
     awful.key({ modkey, "Control" },            "p",     function () awful.util.spawn('sh /home/plof/.config/rofi/applets/applets/powermenu.sh') end,
