@@ -25,6 +25,9 @@ local awful = require("awful")
 require("awful.autofocus")
 local beautiful = require("beautiful")
 
+local lockscreen = require("modules.lockscreen")
+lockscreen.init()
+
 if file_exists(usr_home .."/.cache/wal/theme.lua") then 
 
 	beautiful.init(usr_home .."/.cache/wal/theme.lua")
@@ -485,7 +488,10 @@ globalkeys = gears.table.join(
               {description = "swap with previous client by index", group = "client"}),
     awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end,
               {description = "focus the next screen", group = "screen"}),
-    awful.key({ modkey   }, "b", function () awful.spawn.with_shell( "slock")    end,
+    awful.key({ modkey   }, "b", function () 
+               -- awful.spawn.with_shell( "slock")    
+              lock_screen_show()
+               end,
               {description = "block screen", group = "client"}),
     awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
               {description = "focus the previous screen", group = "screen"}),
