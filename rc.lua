@@ -26,7 +26,8 @@ require("awful.autofocus")
 local beautiful = require("beautiful")
 
 local lockscreen = require("modules.lockscreen")
-lockscreen.init()
+local screen_locked = {value=false}
+lockscreen.init(screen_locked)
 
 if file_exists(usr_home .."/.cache/wal/theme.lua") then 
 
@@ -490,6 +491,7 @@ globalkeys = gears.table.join(
               {description = "focus the next screen", group = "screen"}),
     awful.key({ modkey   }, "b", function () 
                -- awful.spawn.with_shell( "slock")    
+              screen_locked.value=true
               lock_screen_show()
                end,
               {description = "block screen", group = "client"}),
@@ -501,7 +503,11 @@ globalkeys = gears.table.join(
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
-    awful.key({ modkey, "Control" }, "r", awesome.restart,
+    awful.key({ modkey, "Control" }, "r", function ()
+                if screen_locked.value==false then
+                  awesome.restart()
+                end
+              end,
               {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit,
               {description = "quit awesome", group = "awesome"}),

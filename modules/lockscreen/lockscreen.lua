@@ -339,9 +339,22 @@ local function grab_password()
 					grab_password()
 				end,
 			},
+			--- Fix for Mod+Control crashing the keygrabber
+			{
+				{},
+				"Control",
+				function()
+					reset()
+					grab_password()
+				end,
+			},
 		},
 		keypressed_callback = function(mod, key, cmd)
-			--- Only count single character keys (thus preventing "Shift", "Escape", etc from triggering the animation)
+			--- Only count sin"gle character keys (thus preventing "Shift", "Escape", etc from triggering the animation)
+      if key == nil then
+        notifbox_box("laalalal")
+        reset()
+      end
 			if #key == 1 then
 				characters_entered = characters_entered + 1
 				key_animation(true)
