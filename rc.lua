@@ -343,7 +343,7 @@ systray:set_base_size(20)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-        github_contributions_widget({username = 'senchpimy',days=30,theme='pink',with_border=false}),
+        github_contributions_widget(),
 		 --wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 5, 0), beautiful.bg_normal),
 		 wibox.container.background(wibox.container.margin(systray,10, 5), beautiful.bg_normal),
 		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 0, 0), beautiful.bg_normal),
@@ -382,7 +382,7 @@ systray:set_base_size(20)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-        github_contributions_widget({username = 'senchpimy',days=30,theme='pink',with_border=false}),
+        github_contributions_widget(),
 		 --wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 5, 0), beautiful.bg_normal),
 		 wibox.container.background(wibox.container.margin(systray,10, 5), beautiful.bg_normal),
 		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 0, 0), beautiful.bg_normal),

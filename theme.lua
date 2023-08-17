@@ -13,12 +13,13 @@ local usr_home= os.getenv( "HOME" )
 theme={}
 theme.font          = "Hack 8"
 
-theme.bg_normal     = "#212121"
-theme.bg_focus      = "#375088"
+theme.bg_normal     = "#141510"
+theme.bg_focus      = "#999A60"
+theme.bg_extra      = "#3754A0"
 theme.bg_urgent     = "#92172E"
-theme.bg_minimize   = "#716F51"
+theme.bg_minimize   = "#354F8D"
 theme.bg_systray    = theme.bg_normal
-theme.bg_separator    = "#94A459"
+theme.bg_separator    = "#ABA998"
 theme.systray_icon_spacing=8
 --theme.bg_systray    =theme.bg_separator 
 
@@ -76,7 +77,7 @@ theme.menu_width  = dpi(100)
 
 -- Define the image to load
 
-theme.wallpaper = usr_home.."/.config/awesome/wallpaper.jpg"
+theme.wallpaper = "/home/plof/.config/awesome/wallpaper.jpg"
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = themes_path.."default/layouts/fairhw.png"
