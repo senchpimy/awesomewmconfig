@@ -44,82 +44,6 @@ local wibox = require("wibox")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
-local bling = require("bling")
-local app_launcher_config = {
-    terminal = "alacritty",                                            -- Set default terminal
-    search_commands = false,                                            -- Search by app name AND commandline command
-    sort_alphabetically = true,                                        -- Sorts applications alphabetically
-    select_before_spawn = false,                                        -- When selecting by mouse, click once to select app, click once more to open the app.
-    hide_on_left_clicked_outside = true,                               -- Hide launcher on left click outside the launcher popup
-    hide_on_right_clicked_outside = true,                              -- Hide launcher on right click outside the launcher popup
-    hide_on_launch = true,                                             -- Hide launcher when spawning application
-    try_to_keep_index_after_searching = false,                         -- After a search, reselect the previously selected app
-    reset_on_hide = true,                                              -- When you hide the launcher, reset search query
-    save_history = true,                                               -- Save search history
-    wrap_page_scrolling = true,                                        -- Allow scrolling to wrap back to beginning/end of launcher list
-    wrap_app_scrolling = true ,                                        -- Set app scrolling
-
-    type = "dock",
-    show_on_focused_screen = true,                                     -- Should app launcher show on currently focused screen
-    screen = awful.screen,                                             -- Screen you want the launcher to launch to
-    placement = awful.placement.centered,                              -- Where launcher should be placed ("awful.placement.centered").
-    shrink_width = false,                                               -- Automatically shrink width of launcher to fit varying numbers of apps in list (works on apps_per_column)
-    shrink_height = false,                                              -- Automatically shrink height of launcher to fit varying numbers of apps in list (works on apps_per_row)
-    background = beautiful.bg_separator,                                            -- Set bg color
-    border_width = 0,                                             -- Set border width of popup
-    shape = function(cr, width, height)
-      gears.shape.rounded_rect(cr, width, height, 50)
-    end,                                                               -- Set shape for launcher
-    prompt_height = 50,
-    prompt_margins = 30,
-    prompt_paddings = 1,                                         -- Prompt padding
-    prompt_shape = function(cr, width, height)
-      gears.shape.rectangle(cr, width, height)
-    end                        ,                                       -- Set shape for prompt
-    prompt_color = beautiful.bg_separator,                                      -- Prompt background color
-    prompt_border_width = 0 ,
-    prompt_text_halign = "left"   ,                                  -- Prompt text horizontal alignment
-    prompt_text_valign = "center"    ,                                 -- Prompt text vertical alignment
-    prompt_icon_text_spacing = 10,                                -- Prompt icon text spacing
-    prompt_show_icon = false            ,                               -- Should prompt show icon (?)
-    prompt_icon_color = "#000000" ,                                    -- Prompt icon color
-    prompt_icon = ""  ,                                               -- Prompt icon
-    prompt_icon_markup = string.format(
-        "<span size='xx-large'>%s</span>",
-        " "
-    )                   ,                                              -- Prompt icon markup
-    prompt_text = "<b>Search</b>:" ,
-    prompt_start_text = "manager"  ,                                   -- Set string for prompt to start with
-    prompt_text_color = "#FFFFFF"    ,                                 -- Prompt text color
-    prompt_cursor_color = "#000000"  ,                                 -- Prompt cursor color
-
-    apps_per_row = 3                  ,                                -- Set how many apps should appear in each row
-    apps_per_column = 1                ,                               -- Set how many apps should appear in each column
-    apps_margin = {left = 40, right = 40, bottom = 30} ,-- Margin between apps
-    apps_spacing = 10  ,                                          -- Spacing between apps
-
-    expand_apps = true       ,                                         -- Should apps expand to fill width of launcher
-    app_width = 700 ,                                        -- Width of each app
-    app_height = 30,                                       -- Height of each app
-    app_shape = function(cr, width, height)
-      gears.shape.rounded_bar(cr, width, height)
-    end   ,                                                            -- Shape of each app
-    app_normal_color = beautiful.bg_separator,
-    app_normal_hover_color = beautiful.fg_normal,
-    app_selected_color = beautiful.bg_normal,
-    app_selected_hover_color = beautiful.fg_normal,
-    app_content_padding = 5,
-    app_content_spacing = 5,
-    app_show_icon = false                     ,                         -- Should show icon?
-    app_show_name = true                ,                              -- Should show app name?
-    app_name_generic_name_spacing = 0,                            -- Generic name spacing (If show_generic_name)
-    app_name_halign = "center"             ,                           -- App name horizontal alignment
-    app_name_normal_color = beautiful.fg_normal,
-    app_name_selected_color = beautiful.fg_normal,
-    app_show_generic_name = true               ,                       -- Should show generic app name?
-}
-local app_launcher = bling.widget.app_launcher(app_launcher_config)
--- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 --Lain
@@ -547,7 +471,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey,altkey },            "u",     function () awful.screen.focused().mypromptbox:run() end,
             {description = "run prompt", group = "launcher"}),
     awful.key({ modkey },            "r",     function () 
-       app_launcher:toggle()
+      awful.util.spawn('rofi -no-lazy-grab -show drun -modi drun,run,window -theme /home/plof/.config/rofi/launchers/style_1.rasi')
   end,
               {description = "run prompt", group = "launcher"}),
 
