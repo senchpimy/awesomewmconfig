@@ -9,6 +9,12 @@ pcall(require, "luarocks.loader")
 require('collision')()
 local awmodoro = require("awmodoro")
 local battery_exists = false
+local collage = require("collage")
+collage.show()
+collage.show()
+--collage.placeCollageImage
+--local src = {1="/home/plof/Pictures/fondo2.png"}
+--collage.placeCollageImage(100,100,100,100,"top_right","/home/plof/Pictures/fondo2.png",0,false)
 
 if file_exists('/sys/class/power_supply/BAT0') then
   battery_exists = true
