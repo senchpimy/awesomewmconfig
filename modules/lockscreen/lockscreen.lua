@@ -27,7 +27,8 @@ local some_textbox = wibox.widget.textbox()
 lock_screen_box = wibox({ visible = false, ontop = true, type = "splash", screen = screen.primary })
 awful.placement.maximize(lock_screen_box)
 
-lock_screen_box.bg = "#000000"
+--lock_screen_box.bg = "#45F"
+lock_screen_box.bg = beautiful.wallpaper
 lock_screen_box.fg = "#45F060"
 
 --- Add lockscreen to each screen

@@ -25,9 +25,7 @@ local awful = require("awful")
 require("awful.autofocus")
 local beautiful = require("beautiful")
 
-local lockscreen = require("modules.lockscreen")
-local screen_locked = {value=false}
-lockscreen.init(screen_locked)
+
 
 if file_exists(usr_home .."/.cache/wal/theme.lua") then 
 
@@ -37,7 +35,11 @@ else
 	beautiful.init(usr_home .."/.config/awesome/theme.lua")
 end
 
+local lockscreen = require("modules.lockscreen")
+local screen_locked = {value=false}
+lockscreen.init(screen_locked)
 local wibox = require("wibox")
+
 --
 local naughty = require("naughty")
 local menubar = require("menubar")
