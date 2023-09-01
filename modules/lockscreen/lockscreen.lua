@@ -1,7 +1,7 @@
 local gears = require("gears")
 local awful = require("awful")
 local beautiful = require("beautiful")
-local xresources = require("beautiful.xresources")
+local xresources = requre("beautiful.xresources")
 local dpi = xresources.apply_dpi
 local wibox = require("wibox")
 local helpers = require("helpers")
@@ -14,8 +14,8 @@ local lock_screen_symbol = " "
 local lock_screen_fail_symbol = " "
 local lock_animation_icon = wibox.widget({
 	--- Set forced size to prevent flickering when the icon rotates
-	forced_height = dpi(80),
-	forced_width = dpi(80),
+	forced_height = dpi(100),
+	forced_width = dpi(100),
 	--font = beautiful.icon_font .. "Outlined 40",
 	align = "center",
 	valign = "center",
@@ -27,7 +27,6 @@ local some_textbox = wibox.widget.textbox()
 lock_screen_box = wibox({ visible = false, ontop = true, type = "splash", screen = screen.primary })
 awful.placement.maximize(lock_screen_box)
 
---lock_screen_box.bg = "#45F"
 lock_screen_box.bg = beautiful.wallpaper
 lock_screen_box.fg = "#45F060"
 
@@ -146,7 +145,7 @@ end
 
 local var_count = 0
 for i, m in pairs(time_char) do
-	local text = helpers.ui.colorize_text(m, "#ffffff" .. "10")
+	local text = helpers.ui.colorize_text(m, "#000000" .. "10") -- TODO
 
 	var_count = var_count + 1
 	local create_dummy_text = true
@@ -172,14 +171,14 @@ end
 local function activate_word(w)
 	for i, m in pairs(char_map[w]) do
 		local text = m.text
-		m.markup = helpers.ui.colorize_text(text, beautiful.white)
+		m.markup = helpers.ui.colorize_text(text, beautiful.white) ---TODO
 	end
 end
 
 local function deactivate_word(w)
 	for i, m in pairs(char_map[w]) do
 		local text = m.text
-		m.markup = helpers.ui.colorize_text(text, "#ffffff" .. "10")
+		m.markup = helpers.ui.colorize_text(text, "#000000" .. "10") --TODO
 	end
 end
 
@@ -288,12 +287,13 @@ end
 
 local animation_colors = {
 	--- Rainbow sequence
-	"#00FF00",
-	"#00FF00",
-	"#00FF00",
-	"#00FF00",
-	"#00FF00",
-	"#00FF00"
+	"#EE6352",
+	"#59CD90",
+	"#4CBAB3",
+	"#3FA7D6",
+	"#FAC05E",
+	"#F9AF71",
+	"#F79D84"
 }
 
 local animation_directions = { "north", "west", "south", "east" }
@@ -353,7 +353,6 @@ local function grab_password()
 		keypressed_callback = function(mod, key, cmd)
 			--- Only count sin"gle character keys (thus preventing "Shift", "Escape", etc from triggering the animation)
       if key == nil then
-        notifbox_box("laalalal")
         reset()
       end
 			if #key == 1 then
