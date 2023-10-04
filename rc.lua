@@ -34,10 +34,8 @@ local beautiful = require("beautiful")
 
 
 if file_exists(usr_home .."/.cache/wal/theme.lua") then 
-
 	beautiful.init(usr_home .."/.cache/wal/theme.lua")
 else
-
 	beautiful.init(usr_home .."/.config/awesome/theme.lua")
 end
 
@@ -82,7 +80,7 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 --
-
+local player = require('media-player')
 
 -- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
@@ -321,6 +319,9 @@ systray:set_base_size(20)
 		 wibox.container.background(wibox.container.margin(volume_widget(), 4, 8), beautiful.bg_separator),
 		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_normal), 0, 0), beautiful.bg_separator),
 		 todo_widget(),
+		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 0, 0), beautiful.bg_normal),
+		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_normal), 0, 0), beautiful.bg_separator),
+		 wibox.container.background(wibox.container.margin(player.widget, 4, 8), beautiful.bg_normal),
 		 wibox.container.background(wibox.container.margin(separator("alpha",beautiful.bg_separator), 0, 0), beautiful.bg_normal),
 		 wibox.container.background(wibox.container.margin(
             ram({
