@@ -14,6 +14,8 @@ Features
     + Brightess
     + Power
 
+- Audio Control trough **playerctl**
+
 ![rofi](./rofi.png)
 
 - Widgets
